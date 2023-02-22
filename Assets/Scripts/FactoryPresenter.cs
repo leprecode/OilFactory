@@ -1,33 +1,53 @@
-﻿using UnityEngine;
+﻿using System;
+using Unity.VisualScripting;
+using UnityEngine;
 using Zenject;
 
-public class FactoryPresenter
+public class FactoryPresenter : MonoBehaviour
 {
-    [SerializeField] private FactoryModel _model;
+    public delegate void OnOilExtractHandler(int newTotalOilValue);
+    public static event OnOilExtractHandler OnOilExtract;
 
-    public FactoryPresenter()
+    [SerializeField] private FactorySettings _settings;
+    [SerializeField] private FactoryModel _factoryModel;
+
+    public void Construct(FactorySettings settings, FactoryModel factoryModel)
+    {
+        _settings = settings;
+        _factoryModel = factoryModel;
+    }
+
+    private void OnEnable()
     {
         Subscribe();
     }
 
-    ~FactoryPresenter() 
+    private void OnDisable()
     {
         Unsubscribe();
     }
 
-    public void Construct(FactoryModel model)
+    private void Start()
     {
-        ChangeModel(model);
+        OnOilExtract?.Invoke(_factoryModel.GetOil());
     }
 
-    private void ChangeModel(FactoryModel model)
+    public void ChangeModel(FactorySettings model)
     {
-        _model = model;
+        _settings = model;
     }
 
     private void HandleDayEnd()
     {
-        Debug.Log("Oil!");
+        //TODO: исправить на каждые десять секунд
+        ExtractOil();
+    }
+
+    private void ExtractOil()
+    {
+        _factoryModel.AddOil(_settings.oilProductionPerTImePeriod);
+
+        OnOilExtract?.Invoke(_factoryModel.GetOil());
     }
 
     private void Subscribe()

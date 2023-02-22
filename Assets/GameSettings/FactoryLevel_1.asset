@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c1e3a366d43f6e409999ab2d2d29c29, type: 3}
+  m_Script: {fileID: 11500000, guid: b7d386e49030ce443b132b665d478792, type: 3}
   m_Name: FactoryLevel_1
   m_EditorClassIdentifier: 
-  _prefab: {fileID: 0}
-  _level: 0
-  _oilProductionPerDay: 0
-  _buildingCost: 0
+  <Prefab>k__BackingField: {fileID: 8742808173563737011, guid: c324b88ba3c8839439c0337f0a1e4db0,
+    type: 3}
+  <oilProductionPerTImePeriod>k__BackingField: 0
+  _level: 1
+  _buildingCost: 1000
