@@ -37,9 +37,8 @@ public class FactoryPresenter : MonoBehaviour
         _settings = model;
     }
 
-    private void HandleDayEnd()
+    private void HandleOilsTimerFinish()
     {
-        //TODO: исправить на каждые десять секунд
         ExtractOil();
     }
 
@@ -52,11 +51,11 @@ public class FactoryPresenter : MonoBehaviour
 
     private void Subscribe()
     {
-        DayTicker.OnDayEnd += HandleDayEnd;
+        TimeTicker.OnOilsTimerEnd += HandleOilsTimerFinish;
     }
 
     private void Unsubscribe()
     {
-        DayTicker.OnDayEnd += HandleDayEnd;
+        TimeTicker.OnOilsTimerEnd -= HandleOilsTimerFinish;
     }
 }

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Prefab>k__BackingField: {fileID: 8742808173563737011, guid: c324b88ba3c8839439c0337f0a1e4db0,
     type: 3}
-  <oilProductionPerTImePeriod>k__BackingField: 0
+  <oilProductionPerTImePeriod>k__BackingField: 10
   _level: 1
   _buildingCost: 1000

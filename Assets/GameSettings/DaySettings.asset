@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea859bd2151aa414c864389513bb518c, type: 3}
   m_Name: DaySettings
   m_EditorClassIdentifier: 
-  <dayDurationInSeconds>k__BackingField: 3
+  <dayDurationInSeconds>k__BackingField: 60
+  <timeToProduceOil>k__BackingField: 10

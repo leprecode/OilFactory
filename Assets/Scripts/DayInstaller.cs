@@ -6,7 +6,7 @@ namespace Assets.Scripts
 {
     public class DayInstaller : MonoInstaller
     {
-        [SerializeField] private Day _daySettings;
+        [SerializeField] private TimeSettings _daySettings;
 
         public override void InstallBindings()
         {
@@ -16,7 +16,7 @@ namespace Assets.Scripts
 
         private void BindDaySettings()
         {
-            Container.Bind<Day>()
+            Container.Bind<TimeSettings>()
                 .FromInstance(_daySettings)
                 .AsSingle()
                 .NonLazy();
@@ -24,18 +24,18 @@ namespace Assets.Scripts
 
         private void BindDayTicker()
         {
-            DayTicker dayTicker = CreateDayTicker();
+            TimeTicker dayTicker = CreateDayTicker();
 
-            Container.Bind<DayTicker>()
+            Container.Bind<TimeTicker>()
                 .FromInstance(dayTicker)
                 .AsSingle()
                 .NonLazy();
         }
 
-        private DayTicker CreateDayTicker()
+        private TimeTicker CreateDayTicker()
         {
             GameObject dayTickerObject = new GameObject("DayTicker");
-            DayTicker dayTicker = dayTickerObject.AddComponent<DayTicker>();
+            TimeTicker dayTicker = dayTickerObject.AddComponent<TimeTicker>();
 
             dayTicker.Construct(_daySettings);
             return dayTicker;
