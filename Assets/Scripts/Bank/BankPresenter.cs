@@ -28,7 +28,7 @@ namespace Assets.Scripts.Bank
 
         }
 
-        public bool Buy(int cost)
+        public bool TryBuy(int cost)
         {
             if (CheckIsEnoughMoney(cost))
             {

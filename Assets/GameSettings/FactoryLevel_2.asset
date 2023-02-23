@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7d386e49030ce443b132b665d478792, type: 3}
-  m_Name: FactoryLevel_1
+  m_Name: FactoryLevel_2
   m_EditorClassIdentifier: 
-  <Prefab>k__BackingField: {fileID: 8742808173563737011, guid: c324b88ba3c8839439c0337f0a1e4db0,
+  <Prefab>k__BackingField: {fileID: 493613502135992878, guid: a2aba7a8ef017d643b75189d5794122b,
     type: 3}
-  <oilProductionPerTImePeriod>k__BackingField: 10
-  <buildingCost>k__BackingField: 0
-  <level>k__BackingField: 1
+  <oilProductionPerTImePeriod>k__BackingField: 100
+  <buildingCost>k__BackingField: 1000
+  <level>k__BackingField: 2

@@ -17,4 +17,24 @@ public class FactoriesCollection : ScriptableObject
         else
             return null;
     }
+
+    public bool CheckNextFactoryLevel(FactorySettings currentSettings)
+    {
+        if (_factories.IndexOf(currentSettings) == _factories.Count-1)
+            return false;
+
+        return true;
+    }
+
+    public FactorySettings GetNextFactory(FactorySettings currentSettings)
+    {
+        if (CheckNextFactoryLevel(currentSettings))
+        {
+            return _factories[(_factories.IndexOf(currentSettings) + 1)];
+        }
+
+        return null;
+    }
+
+
 }

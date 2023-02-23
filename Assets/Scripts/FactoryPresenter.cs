@@ -32,7 +32,7 @@ public class FactoryPresenter : MonoBehaviour
         OnOilExtract?.Invoke(_factoryModel.GetOil());
     }
 
-    public void ChangeModel(FactorySettings model)
+    public void InstallNewSettings(FactorySettings model)
     {
         _settings = model;
     }

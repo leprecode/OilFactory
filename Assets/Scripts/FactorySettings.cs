@@ -6,6 +6,7 @@ public class FactorySettings : ScriptableObject
 {
     [field: SerializeField] public GameObject Prefab { get; private set; }
     [field: SerializeField] public int oilProductionPerTImePeriod { get; private set; }
-    [SerializeField] private int _level;
-    [SerializeField] private float _buildingCost;
+    [field: SerializeField] public int buildingCost { get; private set; }
+
+    [field: SerializeField] public int level { get; private set; }
 }
