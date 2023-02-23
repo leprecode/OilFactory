@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6649095296459807905}
   - component: {fileID: 2344635865658333382}
   - component: {fileID: 5925525917799840927}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: OilFactoryLvl1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

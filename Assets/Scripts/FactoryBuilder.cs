@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using TMPro;
 using UnityEngine;
 using Zenject;
 
@@ -32,10 +33,59 @@ public class FactoryBuilder
         GameObject newFactoryObject
             = GameObject.Instantiate
             (newFactorySettings.Prefab,
-            Vector3.zero, 
-            Quaternion.identity, 
+            Vector3.zero,
+            Quaternion.identity,
             _factory.transform);
 
 
+    }
+}
+
+public class UpgradeMenu : MonoBehaviour
+{
+    public delegate void OnButtonClick();
+    public static event OnButtonClick OnUpgradeOilProductionButtonClick;
+
+    [SerializeField] private TextMeshProUGUI _currentFactoryLevel;
+    [SerializeField] private TextMeshProUGUI _nextFactoryLevel;
+    [SerializeField] private TextMeshProUGUI _upgradeCost;
+
+    public void Upgrade()
+    {
+        OnUpgradeOilProductionButtonClick?.Invoke();
+    }
+}
+
+public class UpgradeSeller
+{
+    public UpgradeSeller()
+    {
+        Subscribe();
+    }
+
+    ~UpgradeSeller()
+    {
+        Unsubscribe();
+    }
+
+    private void Subscribe()
+    {
+        UpgradeMenu.OnUpgradeOilProductionButtonClick += UpgradeOilProduction;
+    }
+
+    private void Unsubscribe()
+    {
+        UpgradeMenu.OnUpgradeOilProductionButtonClick -= UpgradeOilProduction;
+    }
+
+    private void UpgradeOilProduction()
+    {
+        //Уточнить есть ли еще апгрейды
+        //Запросить имеющиеся деньги
+        //Уточнить цену апгрейда
+
+        //Если денег хватает покупаем и обновляем вьюшку
+        //Если денег не хватает обновляем вьюшку
+        //Если это был последний апгрейд обновляем вьюшку
     }
 }

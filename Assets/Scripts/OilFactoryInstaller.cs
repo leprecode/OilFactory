@@ -7,12 +7,8 @@ public class OilFactoryInstaller : MonoInstaller
     public override void InstallBindings()
     {
         BindFactoryCollection();
-/*        BindFactoryPresenter();
-*/        BindFactoryBuilder();
+      BindFactoryBuilder();
     }
-
-/*    private void BindFactoryPresenter() 
-        => Container.Bind<FactoryPresenter>().AsSingle().NonLazy();*/
 
     private void BindFactoryCollection() 
         => Container
