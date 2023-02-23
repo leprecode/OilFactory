@@ -11,6 +11,4 @@ public class UpgradeSellerInstaller : MonoInstaller
     {
         Container.Bind<UpgradeSeller>().AsSingle().NonLazy();
     }
-
-
 }

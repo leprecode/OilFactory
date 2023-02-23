@@ -15,14 +15,18 @@ public class FactoryBuilder
     public FactoryBuilder(FactoriesCollection factoriesCollection)
     {
         _factoriesCollection = factoriesCollection;
+        _currentFactorySettings = _factoriesCollection.GetFactory(0);
 
-        BuildFactory(0);
+        BuildCurrentFactory();
     }
 
-    public void InstallNextFactoryLevel()
+    public void UpgradeFactory()
     {
         _currentFactorySettings = _factoriesCollection.GetNextFactory(_currentFactorySettings);
         _factoryPresenter.InstallNewSettings(_currentFactorySettings);
+
+        GameObject.Destroy(_factory);
+        BuildCurrentFactory();
     }
 
     public bool CheckNextFactoryLevel()
@@ -62,10 +66,8 @@ public class FactoryBuilder
         return 0;
     }
 
-    private void BuildFactory(int levelOfFactory)
+    private void BuildCurrentFactory()
     {
-        _currentFactorySettings = _factoriesCollection.GetFactory(levelOfFactory);
-
         _factory = new GameObject();
         _factory.transform.position = Vector3.zero;
         _factory.name = "Factory";

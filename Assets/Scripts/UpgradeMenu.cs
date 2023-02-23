@@ -14,6 +14,12 @@ public class UpgradeMenu : MonoBehaviour
     [SerializeField] private GameObject _notEnoughMoneyPopUp;
     [SerializeField] private GameObject _boughtLastUpgradePopUp;
 
+    [SerializeField] private GameObject _upgradeButton;
+    [SerializeField] private GameObject _priceBlock;
+    [SerializeField] private GameObject _levelUpBlock;
+
+    [SerializeField] private GameObject _maxUpgradedBlock;
+
     public void Upgrade()
     {
         OnUpgradeOilProductionButtonClick?.Invoke();
@@ -58,6 +64,8 @@ public class UpgradeMenu : MonoBehaviour
             EnablePopUp(_boughtLastUpgradePopUp);
 
             StartCoroutine(DisablePopUp(_boughtLastUpgradePopUp,_boughtLastUpgradePopUp.GetComponent<Animation>().clip.length));
+
+            SwitchUpgradeStatusElements(false);
         }
     }
     private void HandleNotEnoughMoney()
@@ -82,5 +90,14 @@ public class UpgradeMenu : MonoBehaviour
     public IEnumerator DisablePopUp(GameObject popUp, float delay)
     {
         yield return new WaitForSeconds(delay); 
+    }
+
+    private void SwitchUpgradeStatusElements(bool value)
+    {
+        _upgradeButton.SetActive(value);
+        _priceBlock.SetActive(value);
+        _levelUpBlock.SetActive(value);
+
+        _maxUpgradedBlock.SetActive(!value);
     }
 }

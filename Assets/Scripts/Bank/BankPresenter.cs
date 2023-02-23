@@ -25,7 +25,6 @@ namespace Assets.Scripts.Bank
                 _model.AddMoney(value);
                 OnAddMoney?.Invoke(value);
             }
-
         }
 
         public bool TryBuy(int cost)

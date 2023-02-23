@@ -34,4 +34,23 @@ namespace Assets.Scripts.Bank
             Container.Bind<BankView>().FromInstance(_bankView).AsSingle().NonLazy();
         }
     }
+
+    public class TradingMarketInstaller : MonoInstaller
+    {
+        public override void InstallBindings()
+        {
+            BindTradingMarketModel();
+            BindTradingMarketPresenter();
+        }
+
+        private void BindTradingMarketPresenter()
+        {
+            Container.Bind<TradingMarketPresenter>().AsSingle().NonLazy();
+        }
+
+        private void BindTradingMarketModel()
+        {
+            Container.Bind<TradingMarketModel>().AsSingle().NonLazy();
+        }
+    }
 }

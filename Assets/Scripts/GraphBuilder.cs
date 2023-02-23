@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-
+using Assets.Scripts.Bank;
+using Zenject;
 
 namespace Assets.Scripts
 {
@@ -103,6 +104,70 @@ namespace Assets.Scripts
             rectTransform.sizeDelta = new Vector2(distance, _widthOfConnection);
             rectTransform.anchoredPosition = dotPositionA + dir * distance * .5f;
             rectTransform.localEulerAngles = new Vector3(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
+        }
+    }
+
+
+    public class TradingMarketModel
+    {
+        [field: SerializeField] private double _currentPriceForOil;
+
+
+    }
+
+    public class TradingMarketPresenter 
+    {
+        private readonly FactoryPresenter factoryPresenter;
+        private readonly BankPresenter bankPresenter;
+        private readonly TradingMarketModel tradingMarket;
+
+        [Inject]
+        public TradingMarketPresenter(FactoryPresenter factoryPresenter, 
+            BankPresenter bankPresenter, TradingMarketModel tradingMarket)
+        {
+            this.factoryPresenter = factoryPresenter;
+            this.bankPresenter = bankPresenter;
+            this.tradingMarket = tradingMarket;
+
+            Subscribe();
+        }
+
+        ~TradingMarketPresenter()
+        {
+            Unsubscribe();
+        }
+
+        private void Subscribe()
+        {
+            TradingMarketView.OnSellOilClick += HandleOnSellOilClick;
+        }
+
+        private void Unsubscribe()
+        {
+            TradingMarketView.OnSellOilClick -= HandleOnSellOilClick;
+        }
+
+        private void HandleOnSellOilClick()
+        {
+            //Выяснить есть ли нефть
+            
+            //1. Нет. Бросить попап что все продано
+
+            //2. Есть
+                //Берем всю нефть и расходуем ее
+                //Перемножаем количество нефти на нынешний курс и отправляем в банк
+        }
+
+    }
+
+    public class TradingMarketView
+    {
+        public delegate void OnButtoncClick();
+        public static event OnButtoncClick OnSellOilClick;
+
+        public void SellAllOil()
+        {
+            OnSellOilClick?.Invoke();
         }
     }
 }

@@ -17,7 +17,7 @@ public class UpgradeSeller
     private FactoryBuilder _factoryBuilder;
 
     [Inject]
-    public UpgradeSeller(BankPresenter bankPresenter, 
+    public UpgradeSeller(BankPresenter bankPresenter,
         FactoryBuilder factoryBuilder)
     {
         _bankPresenter = bankPresenter;
@@ -52,22 +52,21 @@ public class UpgradeSeller
 
         if (_bankPresenter.TryBuy(_factoryBuilder.GetUpgradeCost()))
         {
-            _factoryBuilder.InstallNextFactoryLevel();
+            _factoryBuilder.UpgradeFactory();
 
             if (!_factoryBuilder.CheckNextFactoryLevel())
             {
                 OnLastUpgrade?.Invoke();
                 Debug.Log("BoughtLAstUpgrade");
             }
-            else
-            {
-                OnSuccessfullDeal?.Invoke(
-                    _factoryBuilder.GetCurrentLevel(),
-                    _factoryBuilder.GetNextLevel(),
-                    _factoryBuilder.GetUpgradeCost()
-                    );
-                Debug.Log("Bought another Upgrade");
-            }
+
+            OnSuccessfullDeal?.Invoke(
+                _factoryBuilder.GetCurrentLevel(),
+                _factoryBuilder.GetNextLevel(),
+                _factoryBuilder.GetUpgradeCost()
+                 );
+            Debug.Log("Bought another Upgrade");
+
         }
         else
         {
