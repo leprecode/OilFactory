@@ -1,4 +1,5 @@
-﻿using System.Timers;
+﻿using System.ComponentModel;
+using System.Timers;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FactoryLevel:", menuName = "ScriptableObjects/NewFactory", order = 1)]

@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-public class UpgradeMenu : MonoBehaviour
+public class UpgradeMenuVeiw : MonoBehaviour
 {
     public delegate void OnButtonClick();
     public static event OnButtonClick OnUpgradeOilProductionButtonClick;
@@ -53,7 +53,8 @@ public class UpgradeMenu : MonoBehaviour
     {
         _currentFactoryLevel.SetText(newCurrentLevel.ToString());
         _nextFactoryLevel.SetText(newNextLevel.ToString());
-        _upgradeCost.SetText(newUpgradeCost.ToString());
+        Debug.Log("newUpgradeCost" + newUpgradeCost);
+        _upgradeCost.SetText("$" + newUpgradeCost.ToString());
 
     }
     private void HandleLastUpgrade()

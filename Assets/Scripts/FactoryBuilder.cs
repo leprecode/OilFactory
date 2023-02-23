@@ -5,25 +5,37 @@ using Zenject;
 
 public class FactoryBuilder
 {
-    private const int startProducedOil = 40;
     [SerializeField] private FactoriesCollection _factoriesCollection;
     [SerializeField] private FactorySettings _currentFactorySettings;
     [SerializeField] private FactoryPresenter _factoryPresenter;
     [SerializeField] private GameObject _factory;
 
     [Inject]
-    public FactoryBuilder(FactoriesCollection factoriesCollection)
+    public FactoryBuilder(FactoriesCollection factoriesCollection,
+        [Inject(Id = "FirstLevel")] FactorySettings settings, 
+        FactoryPresenter factoryPresenter)
     {
         _factoriesCollection = factoriesCollection;
-        _currentFactorySettings = _factoriesCollection.GetFactory(0);
+        _currentFactorySettings = settings;
 
         BuildCurrentFactory();
+        _factoryPresenter = factoryPresenter;
     }
 
     public void UpgradeFactory()
     {
-        _currentFactorySettings = _factoriesCollection.GetNextFactory(_currentFactorySettings);
-        _factoryPresenter.InstallNewSettings(_currentFactorySettings);
+        var nextFactory = _factoriesCollection.GetNextFactory(_currentFactorySettings);
+        Debug.Log($"UpgradeFactory new level is: {nextFactory.level}");
+
+
+        if (nextFactory == null) 
+        {
+            Debug.Log("NextFactory is not exist");
+            return;
+        }
+
+        _currentFactorySettings = nextFactory;
+        _factoryPresenter.InstallNewSettings(nextFactory);
 
         GameObject.Destroy(_factory);
         BuildCurrentFactory();
@@ -46,6 +58,8 @@ public class FactoryBuilder
             if (nextFactory != null)
             {
                 var cost = nextFactory.buildingCost;
+
+                Debug.Log($"COST OF UPGRADE level {nextFactory.level} is : ${cost}");
                 return cost;
             }
         }
@@ -71,8 +85,6 @@ public class FactoryBuilder
         _factory = new GameObject();
         _factory.transform.position = Vector3.zero;
         _factory.name = "Factory";
-        _factoryPresenter = _factory.AddComponent<FactoryPresenter>();
-        _factoryPresenter.Construct(_currentFactorySettings, new FactoryModel(startProducedOil));
 
         GameObject newFactoryObject
             = GameObject.Instantiate
@@ -80,7 +92,5 @@ public class FactoryBuilder
             Vector3.zero,
             Quaternion.identity,
             _factory.transform);
-
-
     }
 }

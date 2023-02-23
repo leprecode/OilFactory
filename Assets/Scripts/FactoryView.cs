@@ -5,6 +5,11 @@ public class FactoryView : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI _oilCounter;
 
+    public void InitialValueint(int totalOilValue)
+    {
+        UpdateView(totalOilValue);
+    }
+
     private void OnEnable()
     {
         Subscribe();
@@ -18,11 +23,13 @@ public class FactoryView : MonoBehaviour
     private void Subscribe()
     {
         FactoryPresenter.OnOilExtract += UpdateView;
+        FactoryPresenter.OnOilSpend += UpdateView;
     }
 
     private void Unsubscribe()
     {
         FactoryPresenter.OnOilExtract -= UpdateView;
+        FactoryPresenter.OnOilSpend -= UpdateView;
     }
 
     private void UpdateView(int totalOilValue)

@@ -33,26 +33,25 @@ public class UpgradeSeller
 
     private void Subscribe()
     {
-        UpgradeMenu.OnUpgradeOilProductionButtonClick += UpgradeOilProduction;
+        UpgradeMenuVeiw.OnUpgradeOilProductionButtonClick += UpgradeOilProduction;
     }
 
     private void Unsubscribe()
     {
-        UpgradeMenu.OnUpgradeOilProductionButtonClick -= UpgradeOilProduction;
+        UpgradeMenuVeiw.OnUpgradeOilProductionButtonClick -= UpgradeOilProduction;
     }
 
     private void UpgradeOilProduction()
     {
-        if (!_factoryBuilder.CheckNextFactoryLevel())
-        {
-            OnLastUpgrade?.Invoke();
-            Debug.Log("All upgrades are bought");
-            return;
-        }
-
         if (_bankPresenter.TryBuy(_factoryBuilder.GetUpgradeCost()))
         {
             _factoryBuilder.UpgradeFactory();
+
+            OnSuccessfullDeal?.Invoke(
+                _factoryBuilder.GetCurrentLevel(),
+                _factoryBuilder.GetNextLevel(),
+                _factoryBuilder.GetUpgradeCost()
+             );
 
             if (!_factoryBuilder.CheckNextFactoryLevel())
             {
@@ -60,11 +59,7 @@ public class UpgradeSeller
                 Debug.Log("BoughtLAstUpgrade");
             }
 
-            OnSuccessfullDeal?.Invoke(
-                _factoryBuilder.GetCurrentLevel(),
-                _factoryBuilder.GetNextLevel(),
-                _factoryBuilder.GetUpgradeCost()
-                 );
+
             Debug.Log("Bought another Upgrade");
 
         }

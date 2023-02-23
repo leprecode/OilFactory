@@ -15,23 +15,21 @@ public class FileReader : MonoBehaviour
     [SerializeField] private string _filename;
     [SerializeField] private string[] _textLines;
 
-    [field: SerializeField] public List<double> oilTracks{ get; private set;}
+    [field: SerializeField] public List<float> oilTracks{ get; private set;}
     [SerializeField] private List<string> _dates = new List<string>();
 
-    void Awake()
+    public List<float> DesirializeOilTracks()
     {
-        oilTracks = new List<double>();
+        /*        oilTracks = new List<float>();
 
-        var watch = new Stopwatch();
-        watch.Start();
+                ExtractLinesFromFile();
+                ExtractColumnsFromLines();
 
-        ExtractLinesFromFile();
-        ExtractColumnsFromLines();
+                return oilTracks;*/
 
-
-        watch.Stop();
-        UnityEngine.Debug.Log($"time Spent: {watch.ElapsedMilliseconds}");
+        return oilTracks;
     }
+
     private void ExtractLinesFromFile()
     {
         string path = Application.dataPath + "/TextFile/" + _filename;
@@ -56,8 +54,8 @@ public class FileReader : MonoBehaviour
 
     private void TryParseOilTrack(CultureInfo culture, string[] columns)
     {
-        if (double.TryParse(columns[NUMBER_OF_OILTRACKS_COLUMN],
-            NumberStyles.Float, culture, out double oilTrack))
+        if (float.TryParse(columns[NUMBER_OF_OILTRACKS_COLUMN],
+            NumberStyles.Float, culture, out float oilTrack))
             oilTracks.Add(oilTrack);
     }
 }

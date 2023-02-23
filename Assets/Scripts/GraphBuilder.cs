@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
-using Assets.Scripts.Bank;
-using Zenject;
 
 namespace Assets.Scripts
 {
@@ -13,36 +11,88 @@ namespace Assets.Scripts
         private const float _graphWidthOffset = 0.9f;
         [SerializeField] private float _graphOffsetFromTop = 1.2f;
         [SerializeField] private float _widthOfConnection = 3f;
-        [SerializeField] private int _pointSize = 11;
+        [SerializeField] private int _pointSize = 5;
         [SerializeField] private Sprite _circleSprite;
         [SerializeField] private RectTransform _graphContainer;
         [SerializeField] Color _dotColor;
         [SerializeField] Color _connectionColor;
         [SerializeField] private FileReader _fileReader;
 
+        private List<float> _points;
+        private List<GameObject> _createdGraphObjects;
+
         private void Start()
         {
-              CreateGraph(_fileReader.oilTracks,10);
-            //CreateGraph(new List<double> { 90, 110, 80, 65, 33, 101, 89, 99, 10, 63}, 10);
+            _points = _fileReader.oilTracks;
+            _createdGraphObjects = new List<GameObject>();
+
+            CreateGraph(_points.GetRange(0, 10), 10,0);
+            //CreateGraph(new List<float> { 90, 110, 80, 65, 33, 101, 89, 99, 10, 63}, 10);
         }
 
-        public void AddPointToGraph(double pointValue)
+        public void AddPointToGraph(int indexToStart)
         {
-            
-        
+            //ShiftGraph();
+
+            //TODO: remove magic numbers
+            DestroyGraph();
+            var newRange = _points.GetRange(indexToStart - 9, 10);
+            var duplicatedList = new List<float>();
+
+            CreateGraph(newRange, 10, indexToStart);
+
+            Debug.Log($"indexToStart before: {indexToStart} after: {indexToStart - 10}");
+            Debug.Log($"newRange.Count: {newRange.Count}");
+
+            for (int i = 0; i < newRange.Count; i++)
+            {
+                Debug.Log($"newRange{i} value: {newRange[i]}");
+            }
         }
 
-        private void CreateGraph(List<double> valueList, int desiredPointsCount)
+        private void DestroyGraph()
         {
-            int pointsCount = DefineMaxPointCountToCreate(valueList, desiredPointsCount);
-            float yMaximum = CalculateMaxY(valueList.GetRange(0,pointsCount));
+            for (int i = 0; i < _createdGraphObjects.Count; i++)
+            {
+                GameObject.Destroy(_createdGraphObjects[i]);
+            }
+        }
+
+       /* private void DuplicateList(List<float> toDuplicate)
+        {
+            for (int i = 0; i < toDuplicate.Count; i++)
+            {
+                _points.Add(toDuplicate[i]);
+            }
+        }*/
+
+
+        private void ShiftGraph()
+        {
+            for (int i = 0; i < _createdGraphObjects.Count; i++)
+            {
+                GameObject.Destroy(_createdGraphObjects[i]);
+            }
+
+            _createdGraphObjects.Clear();
+        }
+
+        private void CreateGraph(List<float> valueList, int desiredPointsCount, int indexToStartFrom)
+        {
+            //int pointsCount = DefineMaxPointCountToCreate(valueList, desiredPointsCount);
+            // float yMaximum = CalculateMaxY(valueList.GetRange(0,pointsCount));
+            float yMaximum = 250;
             float graphHeight = _graphContainer.sizeDelta.y;
-            float xSize = CalculateDistributionOnX(pointsCount);
+            float xSize = CalculateDistributionOnX(valueList.Count);
 
             GameObject lastCircleGameObject = null;
 
-            for (int i = 0; i < pointsCount; i++)
+            Debug.Log("valueList count !!!" + valueList.Count);
+
+            for (int i = 0; i < valueList.Count; i++)
             {
+
+                Debug.Log("iterations!");
                 float xPosition = i * xSize;
                 float yPosition = (float)((valueList[i] / yMaximum) * graphHeight);
 
@@ -57,16 +107,17 @@ namespace Assets.Scripts
             }
         }
 
-        private float CalculateMaxY(List<double> valueList)
+
+        private float CalculateMaxY(List<float> valueList)
         {
             return (float)valueList.Max() * _graphOffsetFromTop;
         }
         private float CalculateDistributionOnX(int pointsCount)
         {
-            return (_graphContainer.rect.width* _graphWidthOffset) / pointsCount;
+            return (_graphContainer.rect.width * _graphWidthOffset) / pointsCount;
         }
 
-        private int DefineMaxPointCountToCreate(List<double> valueList, int maxCountGraphPoints)
+        private int DefineMaxPointCountToCreate(List<float> valueList, int maxCountGraphPoints)
         {
             int pointsCount;
             if (maxCountGraphPoints > valueList.Count)
@@ -87,6 +138,9 @@ namespace Assets.Scripts
             rectTransform.sizeDelta = new Vector2(_pointSize, _pointSize);
             rectTransform.anchorMin = new Vector2(0, 0);
             rectTransform.anchorMax = new Vector2(0, 0);
+
+            _createdGraphObjects.Add(newCircle);
+
             return newCircle;
         }
 
@@ -104,70 +158,9 @@ namespace Assets.Scripts
             rectTransform.sizeDelta = new Vector2(distance, _widthOfConnection);
             rectTransform.anchoredPosition = dotPositionA + dir * distance * .5f;
             rectTransform.localEulerAngles = new Vector3(0, 0, UtilsClass.GetAngleFromVectorFloat(dir));
+
+            _createdGraphObjects.Add(newConnection);
         }
     }
 
-
-    public class TradingMarketModel
-    {
-        [field: SerializeField] private double _currentPriceForOil;
-
-
-    }
-
-    public class TradingMarketPresenter 
-    {
-        private readonly FactoryPresenter factoryPresenter;
-        private readonly BankPresenter bankPresenter;
-        private readonly TradingMarketModel tradingMarket;
-
-        [Inject]
-        public TradingMarketPresenter(FactoryPresenter factoryPresenter, 
-            BankPresenter bankPresenter, TradingMarketModel tradingMarket)
-        {
-            this.factoryPresenter = factoryPresenter;
-            this.bankPresenter = bankPresenter;
-            this.tradingMarket = tradingMarket;
-
-            Subscribe();
-        }
-
-        ~TradingMarketPresenter()
-        {
-            Unsubscribe();
-        }
-
-        private void Subscribe()
-        {
-            TradingMarketView.OnSellOilClick += HandleOnSellOilClick;
-        }
-
-        private void Unsubscribe()
-        {
-            TradingMarketView.OnSellOilClick -= HandleOnSellOilClick;
-        }
-
-        private void HandleOnSellOilClick()
-        {
-            //Выяснить есть ли нефть
-            
-            //1. Нет. Бросить попап что все продано
-
-            //2. Есть
-                //Берем всю нефть и расходуем ее
-                //Перемножаем количество нефти на нынешний курс и отправляем в банк
-        }
-
-    }
-
-    public class TradingMarketView
-    {
-        public delegate void OnButtoncClick();
-        public static event OnButtoncClick OnSellOilClick;
-
-        public void SellAllOil()
-        {
-            OnSellOilClick?.Invoke();
-        }
-    }
 }

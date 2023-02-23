@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using UnityEngine;
 using Zenject;
 
 namespace Assets.Scripts.Bank
@@ -23,7 +24,7 @@ namespace Assets.Scripts.Bank
             if (value > 0)
             {
                 _model.AddMoney(value);
-                OnAddMoney?.Invoke(value);
+                OnAddMoney?.Invoke(_model.money);
             }
         }
 
@@ -52,8 +53,9 @@ namespace Assets.Scripts.Bank
         {
             if (value > 0)
             {
+                Debug.Log($"spent money: {value}");
                 _model.SpendMoney(value);
-                OnSpendMoney?.Invoke(value);
+                OnSpendMoney?.Invoke(_model.money);
             }
         }
 
